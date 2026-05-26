@@ -4,7 +4,7 @@ A desktop Tkinter application for preparing passport-style photos with AI-powere
 
 ## Overview
 
-`main.py` provides a polished GUI experience for:
+The GUI app is now located in `passport-pro-ai-studio/main.py` and provides a polished experience for:
 
 - browsing and previewing local image folders
 - removing photo backgrounds automatically
@@ -29,7 +29,10 @@ A desktop Tkinter application for preparing passport-style photos with AI-powere
 Install the required Python packages in a virtual environment before running the app.
 
 ```powershell
-pip install opencv-python pillow mediapipe rembg numpy
+python -m venv venv
+& .\venv\Scripts\Activate.ps1
+python -m pip install -U pip
+python -m pip install -r requirements.txt
 ```
 
 If you already have a `requirements.txt`, install with:
@@ -40,10 +43,18 @@ pip install -r requirements.txt
 
 ## Running the App
 
-Launch the application from the project folder:
+Run the GUI app from its folder (activate the venv first):
 
 ```powershell
-python main.py
+& .\venv\Scripts\Activate.ps1
+python passport-pro-ai-studio\main.py
+```
+
+Run the head-pose tool (useful for debugging face alignment and cropping):
+
+```powershell
+& .\venv\Scripts\Activate.ps1
+python head-pose-estimation\HeadPoseEstimation.py
 ```
 
 ## How to Use
@@ -66,11 +77,19 @@ python main.py
 
 ## Files
 
-- `main.py` — main GUI and image-processing application
-- `HeadPoseEstimation.py` — standalone head pose estimation script
-- `headposeimage.py` — static image head pose testing script
-- `project1.py` — alternate image file manager and processing script
-- `README.md` — project documentation
+- `passport-pro-ai-studio/main.py` — main GUI and image-processing application (moved)
+- `head-pose-estimation/HeadPoseEstimation.py` — standalone head pose estimation utility (moved)
+- `README.md` — project documentation (this file)
+
+Repository layout:
+
+- `passport-pro-ai-studio/` — GUI app and related helpers
+- `head-pose-estimation/` — head-pose estimator and experiments
+- `requirements.txt` — Python dependencies
+
+Notes about removed files:
+
+- `main1.py`, `project1.py`, and `headposeimage.py` were removed to reduce duplication and simplify the repository.
 
 ## License
 
