@@ -252,10 +252,8 @@ class ModernApp:
     # --- ACTIONS ---
 
     def switch_tab(self, index):
-        # Improved switching logic
         current = self.notebook.index(self.notebook.select())
         if current == index and index == 0:
-            # If already on File Explorer, treat as "Browse" request
             self.browse_folder()
             return
 
@@ -277,7 +275,6 @@ class ModernApp:
         
         img_count = 0
         try:
-            # Support a wider range of formats including Screenshots and WebP
             extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.webp', '.tiff', '.jfif')
             for item in sorted(os.listdir(path)):
                 if item.lower().endswith(extensions):
@@ -312,7 +309,6 @@ class ModernApp:
 
     def toggle_camera(self):
         if not self.camera_active:
-            # Try multiple indices and use CAP_DSHOW for Windows
             self.cap = None
             for index in [0, 1, 2]:
                 self.cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)
@@ -320,7 +316,6 @@ class ModernApp:
                     break
             
             if not self.cap or not self.cap.isOpened():
-                # Fallback to default if DSHOW fails
                 self.cap = cv2.VideoCapture(0)
                 if not self.cap.isOpened():
                     messagebox.showerror("Error", "Could not access camera. Check privacy settings.")
@@ -346,23 +341,19 @@ class ModernApp:
             frame = cv2.flip(frame, 1)
             display_frame = frame.copy()
             
-            # Compliance Check
             compliance_msg, color, compliant = self.check_compliance(frame)
             
-            # Draw Passport Overlay
             h, w, _ = frame.shape
             box_h = int(h * 0.7)
             box_w = int(box_h * (35/45))
             x1, y1 = (w - box_w) // 2, (h - box_h) // 2
             cv2.rectangle(display_frame, (x1, y1), (x1+box_w, y1+box_h), (0, 255, 0) if compliant else (0, 0, 255), 2)
             
-            # Convert for Tkinter
             img = cv2.cvtColor(display_frame, cv2.COLOR_BGR2RGB)
             img = PIL.Image.fromarray(img)
             img.thumbnail((640, 480))
             photo = PIL.ImageTk.PhotoImage(img)
             
-            # Thread-safe UI update
             self.root.after(0, self.update_ui, photo, compliance_msg, color, frame)
             time.sleep(0.01)
 
@@ -381,13 +372,8 @@ class ModernApp:
         if not results.multi_face_landmarks:
             return "No Face Detected", "red", False
         
-        # Simple head pose logic
         landmarks = results.multi_face_landmarks[0].landmark
-        # Nose tip (1), left eye (33), right eye (263)
         nose = landmarks[1]
-        
-        # Check if looking forward (yaw)
-        # Ratio of nose center vs eye outer corners
         lx, rx = landmarks[33].x, landmarks[263].x
         eye_center = (lx + rx) / 2
         yaw_diff = abs(nose.x - eye_center)
