@@ -81,6 +81,11 @@ python head-pose-estimation\HeadPoseEstimation.py
 - `head-pose-estimation/HeadPoseEstimation.py` — standalone head pose estimation utility (moved)
 - `README.md` — project documentation (this file)
 
+## Project Index
+
+- [GUI App](passport-pro-ai-studio/main.py)
+- [Head Pose Estimator](head-pose-estimation/HeadPoseEstimation.py)
+
 Repository layout:
 
 - `passport-pro-ai-studio/` — GUI app and related helpers
